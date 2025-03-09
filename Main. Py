@@ -1,0 +1,23 @@
+import flet as ft
+from views.dashboard import Dashboard
+from views.auth_view import LoginView
+
+def main(page: ft.Page):
+    page.title = "Institute Management System"
+    page.bgcolor = "#F0F4F8"
+    page.horizontal_alignment = "center"
+    page.vertical_alignment = "start"
+    page.scroll = "adaptive"
+    
+    # بدء التطبيق بنموذج تسجيل الدخول
+    login_view = LoginView(page=page, on_login=lambda user: on_login_success(page, user))
+    page.add(login_view)
+
+def on_login_success(page: ft.Page, user):
+    page.controls.clear()
+    dashboard = Dashboard(page=page, current_user=user)
+    page.add(dashboard)
+    page.update()
+
+# تشغيل التطبيق على الشبكة المحلية (host=0.0.0.0 يُتيح الوصول من أجهزة أخرى)
+ft.app(target=main, host="0.0.0.0", port=8555, assets_dir="assets")
